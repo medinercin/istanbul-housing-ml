@@ -1,0 +1,21 @@
+district,neighborhood,room,living_room,area,age,floor,price,price_log,price_per_m2,anomaly_method
+Beykoz,Acarlar Mah.,3,1,191,0,16,100000,11.51293546492023,523.5602094240837,isolation_forest;
+Sarıyer,Maslak Mah.,1,1,70,7,21,55000,10.915106645867503,785.7142857142857,isolation_forest;
+Beşiktaş,Bebek Mah.,4,1,240,45,0,190000,12.154784614286667,791.6666666666666,isolation_forest;
+Maltepe,Altayçeşme Mah.,4,2,200,10,9,80000,11.289794413577894,400.0,isolation_forest;
+Beşiktaş,Levent Mah.,3,1,280,5,21,130000,11.775297421715827,464.2857142857143,residual;isolation_forest;
+Şişli,Cumhuriyet Mah.,2,1,148,5,21,110000,11.608244735642321,743.2432432432432,zscore;isolation_forest;
+Maltepe,Bağlarbaşı Mah.,1,0,50,10,4,20000,9.90353755128617,400.0,isolation_forest;
+Şişli,Harbiye Mah.,1,1,102,1,21,110000,11.608244735642321,1078.4313725490197,isolation_forest;
+Zeytinburnu,Sümer Mah.,1,0,41,12,2,22000,9.99884318585288,536.5853658536586,isolation_forest;
+Başakşehir,Bahçeşehir 2. Kısım Mah.,5,1,270,16,0,60000,11.002116507732017,222.22222222222223,isolation_forest;
+Sarıyer,Maslak Mah.,1,1,85,15,20,55000,10.915106645867503,647.0588235294117,isolation_forest;
+Beşiktaş,Levent Mah.,3,1,290,5,13,170000,12.04355959836804,586.2068965517242,isolation_forest;
+Şişli,Mecidiyeköy Mah.,1,0,50,4,2,30000,10.308985993422082,600.0,isolation_forest;
+Esenyurt,Zafer Mah.,3,1,110,7,20,15000,9.61587214452889,136.36363636363637,isolation_forest;
+Şişli,Mecidiyeköy Mah.,1,0,40,11,1,19000,9.852246888342531,475.0,isolation_forest;
+Gaziosmanpaşa,Karadeniz Mah.,1,1,88,5,20,30000,10.308985993422082,340.90909090909093,isolation_forest;
+Bakırköy,Şenlikköy Mah.,4,2,350,26,2,125000,11.736077016252437,357.14285714285717,isolation_forest;
+Ataşehir,Atatürk Mah.,3,1,117,12,21,60000,11.002116507732017,512.8205128205128,isolation_forest;
+Kartal,Kordonboyu Mah.,1,0,53,5,12,37500,10.53212287826962,707.5471698113207,isolation_forest;
+Bakırköy,Şenlikköy Mah.,5,1,350,17,4,170000,12.04355959836804,485.7142857142857,residual;isolation_forest;

@@ -1,0 +1,54 @@
+{
+  "top_10_features": [
+    {
+      "feature": "feature_4",
+      "importance_mean": 0.1423728750559285,
+      "importance_std": 0.004368509654375539
+    },
+    {
+      "feature": "feature_22",
+      "importance_mean": 0.13511093999074997,
+      "importance_std": 0.00664616904177714
+    },
+    {
+      "feature": "feature_5",
+      "importance_mean": 0.062296074568038894,
+      "importance_std": 0.0028518640466172014
+    },
+    {
+      "feature": "feature_23",
+      "importance_mean": 0.02957817614563555,
+      "importance_std": 0.00248872259237234
+    },
+    {
+      "feature": "feature_6",
+      "importance_mean": 0.017695260794901753,
+      "importance_std": 0.0018214252646498647
+    },
+    {
+      "feature": "feature_24",
+      "importance_mean": 0.016443365502862375,
+      "importance_std": 0.0011188777814362112
+    },
+    {
+      "feature": "feature_10",
+      "importance_mean": 0.01581134374028627,
+      "importance_std": 0.002325351637721226
+    },
+    {
+      "feature": "feature_8",
+      "importance_mean": 0.009838629082381745,
+      "importance_std": 0.001158969597395822
+    },
+    {
+      "feature": "feature_11",
+      "importance_mean": 0.005390869678735419,
+      "importance_std": 0.0009719221241612437
+    },
+    {
+      "feature": "feature_12",
+      "importance_mean": 0.00424228651574462,
+      "importance_std": 0.0009894655133198425
+    }
+  ]
+}
