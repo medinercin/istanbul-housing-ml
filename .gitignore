@@ -1,0 +1,84 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb
+
+# Machine Learning / Model files
+*.pkl
+*.h5
+*.hdf5
+*.joblib
+*.model
+
+# CatBoost training logs and info
+catboost_info/
+*.catboost
+
+# TensorBoard logs
+logs/
+runs/
+*.tfevents.*
+
+# Data files (büyük dosyalar - dataset klasöründeki CSV'ler commit edilebilir)
+# *.csv  # dataset klasöründeki CSV'ler gerekli olduğu için ignore etmiyoruz
+*.xlsx
+*.xls
+!requirements.txt
+
+# Outputs (opsiyonel - eğer çıktıları commit etmek istemiyorsan)
+# outputs/
+# outputs/figures/
+# outputs/models/
+# outputs/metrics/
+# outputs/tables/
+# outputs/reports/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Environment variables
+.env
+.env.local
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+tmp/
+temp/
