@@ -1,4 +1,5 @@
-"""Hyperparameter tuning"""
+# Hyperparameter tuning
+# Model parametrelerini optimize ediyoruz
 
 import numpy as np
 from sklearn.model_selection import RandomizedSearchCV
@@ -11,7 +12,7 @@ from src.io import save_json
 
 
 def tune_random_forest(X_train, y_train, preprocessor, n_iter: int = 20, cv: int = 3):
-    """Tune Random Forest hyperparameters"""
+    # Random Forest hyperparameter'larını ayarla
     print("Tuning Random Forest...")
     
     param_distributions = {
@@ -59,7 +60,7 @@ def tune_random_forest(X_train, y_train, preprocessor, n_iter: int = 20, cv: int
 
 
 def tune_xgboost(X_train, y_train, preprocessor, n_iter: int = 20, cv: int = 3):
-    """Tune XGBoost hyperparameters"""
+    # XGBoost hyperparameter'larını ayarla
     print("Tuning XGBoost...")
     
     param_distributions = {
@@ -108,7 +109,7 @@ def tune_xgboost(X_train, y_train, preprocessor, n_iter: int = 20, cv: int = 3):
 
 
 def tune_models(X_train, y_train, preprocessor, model_name: str = 'XGBoost'):
-    """Tune hyperparameters for specified model"""
+    # Belirtilen model için hyperparameter'ları ayarla
     print(f"\n=== Hyperparameter Tuning for {model_name} ===")
     
     if model_name == 'RandomForest':

@@ -1,4 +1,5 @@
-"""Feature engineering utilities"""
+# Feature engineering fonksiyonları
+# Yeni özellikler oluşturma ve hazırlama
 
 import pandas as pd
 import numpy as np
@@ -7,29 +8,27 @@ import src.config as config
 
 
 def create_derived_features(df: pd.DataFrame, for_model: bool = False) -> pd.DataFrame:
-    """
-    Create derived features.
-    If for_model=False, creates price_per_m2 for EDA (leakage risk).
-    If for_model=True, only creates safe features without target leakage.
-    """
+    # Türetilmiş özellikler oluştur
+    # for_model=False: EDA için price_per_m2 oluştur (leakage riski var)
+    # for_model=True: Sadece güvenli özellikler oluştur (target leakage yok)
     df = df.copy()
     
-    # Price per m2 (EDA only - has leakage if used in model)
+    # Price per m2 (sadece EDA için - modelde kullanırsak leakage olur)
     if not for_model and config.FEATURES['create_price_per_m2'] and 'price' in df.columns and 'area' in df.columns:
         df['price_per_m2'] = df['price'] / df['area']
         print("Created price_per_m2 feature (EDA only)")
     
-    # Safe features for modeling
+    # Model için güvenli özellikler
     if for_model:
-        # Total rooms
+        # Toplam oda sayısı
         if 'room' in df.columns and 'living_room' in df.columns:
             df['total_rooms'] = df['room'] + df['living_room']
         
-        # Area per room
+        # Oda başına alan
         if 'area' in df.columns and 'room' in df.columns:
-            df['area_per_room'] = df['area'] / (df['room'] + 1)  # +1 to avoid division by zero
+            df['area_per_room'] = df['area'] / (df['room'] + 1)  # +1 sıfıra bölmeyi önlemek için
         
-        # Age categories (optional)
+        # Yaş kategorileri
         if 'age' in df.columns:
             df['age_category'] = pd.cut(df['age'], bins=[-1, 0, 5, 10, 20, 100], 
                                        labels=['Yeni', '0-5', '6-10', '11-20', '20+'])
@@ -40,7 +39,7 @@ def create_derived_features(df: pd.DataFrame, for_model: bool = False) -> pd.Dat
 def create_aggregation_features(df: pd.DataFrame, 
                                 groupby_cols: List[str],
                                 agg_cols: List[str] = None) -> pd.DataFrame:
-    """Create aggregation features at district/neighborhood level"""
+    # İlçe/mahalle seviyesinde aggregation özellikleri oluştur
     df = df.copy()
     
     if agg_cols is None:
@@ -72,7 +71,7 @@ def create_aggregation_features(df: pd.DataFrame,
 
 
 def prepare_model_features(df: pd.DataFrame) -> pd.DataFrame:
-    """Prepare features for model input"""
+    # Model için özellikleri hazırla
     df = create_derived_features(df, for_model=True)
     
     # Add aggregation features if needed
@@ -83,7 +82,7 @@ def prepare_model_features(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def get_categorical_columns(df: pd.DataFrame) -> List[str]:
-    """Get list of categorical columns"""
+    # Kategorik sütunları döndür
     cat_cols = []
     for col in ['district', 'neighborhood', 'age_category']:
         if col in df.columns:
@@ -92,7 +91,7 @@ def get_categorical_columns(df: pd.DataFrame) -> List[str]:
 
 
 def get_numeric_columns(df: pd.DataFrame) -> List[str]:
-    """Get list of numeric columns (excluding target)"""
+    # Sayısal sütunları döndür (target hariç)
     numeric_cols = df.select_dtypes(include=[np.number]).columns.tolist()
     exclude = ['price', 'price_log', 'price_per_m2']
     numeric_cols = [col for col in numeric_cols if col not in exclude]

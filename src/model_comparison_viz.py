@@ -1,4 +1,5 @@
-"""Enhanced model comparison visualizations"""
+# Gelişmiş model karşılaştırma görselleştirmeleri
+# Detaylı model karşılaştırma grafikleri
 
 import pandas as pd
 import numpy as np
@@ -10,7 +11,7 @@ from src.io import load_json, load_model
 
 
 def create_comprehensive_comparison():
-    """Create comprehensive model comparison visualizations"""
+    # Kapsamlı model karşılaştırma görselleştirmeleri oluştur
     print("\n=== Creating Enhanced Model Comparison Visualizations ===")
     
     # Load metrics

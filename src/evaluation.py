@@ -1,4 +1,4 @@
-"""Model evaluation and metrics"""
+# Model değerlendirme ve metrik hesaplama fonksiyonları
 
 import pandas as pd
 import numpy as np
@@ -11,8 +11,8 @@ from src.io import save_json, save_dataframe
 
 def calculate_metrics(y_true: np.ndarray, y_pred: np.ndarray, 
                      use_log: bool = False) -> dict:
-    """Calculate regression metrics"""
-    # If log transformed, convert back
+    # Regresyon metriklerini hesapla (MAE, RMSE, R2, MAPE)
+    # Log transformasyonu uygulandıysa geri çevir
     if use_log:
         y_true_orig = np.expm1(y_true)
         y_pred_orig = np.expm1(y_pred)
@@ -24,7 +24,7 @@ def calculate_metrics(y_true: np.ndarray, y_pred: np.ndarray,
     rmse = np.sqrt(mean_squared_error(y_true_orig, y_pred_orig))
     r2 = r2_score(y_true_orig, y_pred_orig)
     
-    # MAPE (Mean Absolute Percentage Error)
+    # MAPE hesapla (ortalama mutlak yüzde hatası)
     mape = np.mean(np.abs((y_true_orig - y_pred_orig) / (y_true_orig + 1e-8))) * 100
     
     # Log space metrics (if applicable)
@@ -50,7 +50,7 @@ def calculate_metrics(y_true: np.ndarray, y_pred: np.ndarray,
 
 def plot_predictions(y_true: np.ndarray, y_pred: np.ndarray, 
                     model_name: str, save_path, use_log: bool = False):
-    """Plot actual vs predicted values"""
+    # Gerçek vs tahmin değerlerini görselleştir
     if use_log:
         y_true_plot = np.expm1(y_true)
         y_pred_plot = np.expm1(y_pred)
@@ -103,7 +103,7 @@ def plot_predictions(y_true: np.ndarray, y_pred: np.ndarray,
 
 
 def compare_models(metrics_dict: dict, save_path):
-    """Compare multiple models (includes CatBoost if available)"""
+    # Birden fazla modeli karşılaştır (CatBoost varsa dahil)
     from src.io import load_json
     
     # Try to load CatBoost metrics if not in dict
@@ -177,7 +177,7 @@ def compare_models(metrics_dict: dict, save_path):
 
 def evaluate_models(models: dict, X_test: pd.DataFrame, y_test: pd.Series,
                    use_log: bool = False) -> dict:
-    """Evaluate all models"""
+    # Tüm modelleri değerlendir
     print("\n=== Evaluating Models ===")
     
     all_metrics = {}

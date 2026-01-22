@@ -1,18 +1,19 @@
-"""Main script to run the entire pipeline"""
+# İstanbul kira fiyat tahmini projesi
+# Bu script tüm analiz ve modelleme adımlarını çalıştırıyor
 
 import sys
 from pathlib import Path
 import warnings
-warnings.filterwarnings('ignore')
+warnings.filterwarnings('ignore')  # uyarıları gizle
 
-# Add src to path
+# src klasörünü path'e ekle
 sys.path.insert(0, str(Path(__file__).parent))
 
 import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
 
-# Import project modules
+# Proje modüllerini import et
 import src.config as config
 from src.io import load_data, save_dataframe
 from src.preprocessing import (
@@ -36,48 +37,48 @@ from src.report import generate_analysis_md, save_analysis_report
 
 
 def main():
-    """Main pipeline execution"""
+    # Ana pipeline fonksiyonu - tüm adımları sırayla çalıştırıyor
     print("=" * 60)
     print("Istanbul Rent Prediction Pipeline")
     print("=" * 60)
     
     try:
-        # Step 1: Load data
+        # 1. Veriyi yükle
         print("\n[1/12] Loading data...")
         df = load_data()
         print(f"Initial data shape: {df.shape}")
         
-        # Step 2: Map column names
+        # 2. Sütun isimlerini düzenle
         print("\n[2/12] Mapping column names...")
         df = map_column_names(df)
         
-        # Step 3: Preprocessing
+        # 3. Veri ön işleme - temizleme ve dönüşümler
         print("\n[3/12] Preprocessing data...")
         df = clean_data(df)
-        df, use_log = prepare_target(df)
+        df, use_log = prepare_target(df)  # log transformasyonu uygula
         df = prepare_categorical_features(df)
         
-        # Step 4: Feature Engineering (EDA features)
+        # 4. Feature engineering - EDA için özellikler oluştur
         print("\n[4/12] Feature engineering (EDA)...")
         df_eda = create_derived_features(df, for_model=False)
         
-        # Step 5: EDA
+        # 5. EDA görselleştirmeleri
         print("\n[5/12] Generating EDA visualizations...")
         generate_eda_report(df_eda)
         
-        # Step 6: Volatility Analysis
+        # 6. Volatilite analizi
         print("\n[6/12] Volatility analysis...")
         volatility_df = generate_volatility_report(df_eda)
         
-        # Step 7: Clustering
+        # 7. Clustering analizi
         print("\n[7/12] Clustering analysis...")
         neighborhood_features, cluster_summary = generate_clustering_report(df_eda)
         
-        # Step 8: Prepare features for modeling
+        # 8. Model için özellikleri hazırla
         print("\n[8/12] Preparing features for modeling...")
         df_model = prepare_model_features(df.copy())
         
-        # Get feature columns
+        # Hedef değişkeni ve feature'ları ayır
         target_col = 'price_log' if use_log else 'price'
         X, y = split_features_target(df_model, target_col=target_col)
         
@@ -87,7 +88,7 @@ def main():
         print(f"Categorical features: {len(categorical_cols)}")
         print(f"Numeric features: {len(numeric_cols)}")
         
-        # Handle high cardinality: frequency threshold for neighborhood
+        # Neighborhood için çok fazla kategori var, sık kullanılanları al
         if 'neighborhood' in categorical_cols:
             neighborhood_counts = X['neighborhood'].value_counts()
             threshold = config.PREPROCESSING['neighborhood_freq_threshold']
@@ -104,26 +105,24 @@ def main():
         )
         print(f"Train set: {len(X_train)}, Test set: {len(X_test)}")
         
-        # Get test indices for anomaly detection (mapped to original df_eda indices)
-        # X_test.index contains the original indices from X, which match df_eda
+        # Anomaly detection için test indekslerini sakla
         test_indices = X_test.index.values
         
-        # Step 9: Train models
+        # 9. Modelleri eğit
         print("\n[9/12] Training models...")
         models = train_models(X_train, y_train, X_test, y_test,
                              categorical_cols, numeric_cols)
         
-        # Get preprocessor from trained model (it's already fitted)
+        # Preprocessor'ı al (zaten fit edilmiş)
         if models:
-            # Get preprocessor from first model's pipeline
             first_model = list(models.values())[0]
             preprocessor = first_model.named_steps['preprocessor']
         else:
-            # Fallback: create new preprocessor
+            # Fallback: yeni preprocessor oluştur
             preprocessor = create_preprocessing_pipeline(categorical_cols, numeric_cols)
             preprocessor.fit(X_train)
         
-        # Step 10: Hyperparameter tuning (for best model)
+        # 10. Hyperparameter tuning (en iyi model için)
         print("\n[10/12] Hyperparameter tuning...")
         best_model_name = 'XGBoost' if 'XGBoost' in models else list(models.keys())[0]
         try:
@@ -132,13 +131,13 @@ def main():
             print(f"Tuning failed: {e}")
             tuning_results = None
         
-        # Step 11: Evaluate models
+        # 11. Modelleri değerlendir
         print("\n[11/12] Evaluating models...")
         metrics_dict, predictions_dict = evaluate_models(
             models, X_test, y_test, use_log=use_log
         )
         
-        # Step 12: Interpretability
+        # 12. Interpretability analizi
         print("\n[12/12] Interpretability analysis...")
         try:
             interpretability_results = analyze_interpretability(
@@ -148,7 +147,7 @@ def main():
             print(f"Interpretability analysis failed: {e}")
             interpretability_results = None
         
-        # Step 13: Anomaly detection
+        # 13. Anomaly detection
         print("\n[13/14] Anomaly detection...")
         y_test_orig = np.expm1(y_test) if use_log else y_test
         y_pred_best = predictions_dict.get(best_model_name)
@@ -165,11 +164,11 @@ def main():
         )
         anomaly_count = len(df_anomalies) if df_anomalies is not None and len(df_anomalies) > 0 else 0
         
-        # Step 14: Generate pipeline diagrams
+        # 14. Pipeline diyagramlarını oluştur
         print("\n[14/14] Generating pipeline diagrams...")
         generate_pipeline_diagrams()
         
-        # Step 15: Generate report
+        # 15. Analiz raporunu oluştur
         print("\n[15/15] Generating analysis report...")
         report_content = generate_analysis_md(
             metrics_dict,

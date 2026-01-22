@@ -1,4 +1,5 @@
-"""Volatility analysis for rental prices"""
+# Kira fiyatları için volatilite analizi
+# Fiyat değişkenliğini analiz ediyoruz
 
 import pandas as pd
 import numpy as np
@@ -10,7 +11,7 @@ from src.io import save_dataframe
 
 def calculate_volatility_metrics(df: pd.DataFrame, 
                                  groupby_cols: list = None) -> pd.DataFrame:
-    """Calculate volatility metrics (CV, IQR, std) by district/neighborhood"""
+    # Volatilite metriklerini hesapla (CV, IQR, std) - ilçe/mahalle bazında
     if groupby_cols is None:
         groupby_cols = ['district', 'neighborhood']
     
@@ -53,7 +54,7 @@ def calculate_volatility_metrics(df: pd.DataFrame,
 
 
 def plot_volatility_analysis(volatility_df: pd.DataFrame, save_path, level: str = 'neighborhood', top_n: int = 20):
-    """Plot volatility analysis"""
+    # Volatilite analizini görselleştir
     level_df = volatility_df[volatility_df['level'] == level].copy()
     
     if len(level_df) == 0:
@@ -102,7 +103,7 @@ def plot_volatility_analysis(volatility_df: pd.DataFrame, save_path, level: str 
 
 
 def generate_volatility_report(df: pd.DataFrame):
-    """Generate volatility analysis report"""
+    # Volatilite analiz raporunu oluştur
     print("\n=== Generating Volatility Analysis ===")
     
     volatility_df = calculate_volatility_metrics(df)

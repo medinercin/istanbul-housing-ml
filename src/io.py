@@ -1,4 +1,5 @@
-"""I/O utilities for reading and saving data"""
+# Veri okuma/yazma fonksiyonları
+# CSV, JSON, model dosyalarını yönetir
 
 import pandas as pd
 import json
@@ -9,7 +10,7 @@ import src.config as config
 
 
 def load_data(file_path: Optional[Path] = None) -> pd.DataFrame:
-    """Load CSV data file"""
+    # CSV veri dosyasını yükle
     if file_path is None:
         file_path = config.DATA_FILE
     
@@ -22,7 +23,7 @@ def load_data(file_path: Optional[Path] = None) -> pd.DataFrame:
 
 
 def save_dataframe(df: pd.DataFrame, filename: str, subdir: str = "tables") -> Path:
-    """Save dataframe to CSV"""
+    # DataFrame'i CSV olarak kaydet
     if subdir == "tables":
         output_path = config.TABLES_DIR / filename
     else:
@@ -35,7 +36,7 @@ def save_dataframe(df: pd.DataFrame, filename: str, subdir: str = "tables") -> P
 
 
 def save_json(data: Dict[str, Any], filename: str, subdir: str = "metrics") -> Path:
-    """Save dictionary to JSON"""
+    # Dictionary'yi JSON olarak kaydet
     if subdir == "metrics":
         output_path = config.METRICS_DIR / filename
     else:
@@ -49,7 +50,7 @@ def save_json(data: Dict[str, Any], filename: str, subdir: str = "metrics") -> P
 
 
 def load_json(filename: str, subdir: str = "metrics") -> Dict[str, Any]:
-    """Load JSON file"""
+    # JSON dosyasını yükle
     if subdir == "metrics":
         input_path = config.METRICS_DIR / filename
     else:
@@ -60,7 +61,7 @@ def load_json(filename: str, subdir: str = "metrics") -> Dict[str, Any]:
 
 
 def save_model(model: Any, filename: str) -> Path:
-    """Save trained model using pickle"""
+    # Eğitilmiş modeli pickle ile kaydet
     output_path = config.MODELS_DIR / filename
     output_path.parent.mkdir(parents=True, exist_ok=True)
     with open(output_path, 'wb') as f:
@@ -70,7 +71,7 @@ def save_model(model: Any, filename: str) -> Path:
 
 
 def load_model(filename: str) -> Any:
-    """Load trained model from pickle"""
+    # Pickle ile kaydedilmiş modeli yükle
     input_path = config.MODELS_DIR / filename
     with open(input_path, 'rb') as f:
         return pickle.load(f)

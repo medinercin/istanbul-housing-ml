@@ -1,11 +1,12 @@
-"""CatBoost model training script - Separate from main pipeline"""
+# CatBoost model eğitimi
+# Ana pipeline'dan ayrı bir script - CatBoost'u denemek için
 
 import sys
 from pathlib import Path
 import warnings
 warnings.filterwarnings('ignore')
 
-# Add src to path
+# src klasörünü path'e ekle
 sys.path.insert(0, str(Path(__file__).parent))
 
 import pandas as pd
@@ -26,7 +27,7 @@ from src.features import (
 
 
 def calculate_metrics(y_true, y_pred, use_log=False):
-    """Calculate regression metrics"""
+    # Regresyon metriklerini hesapla
     if use_log:
         y_true_orig = np.expm1(y_true)
         y_pred_orig = np.expm1(y_pred)

@@ -1,16 +1,17 @@
-"""Configuration settings for the project"""
+# Proje ayarları ve konfigürasyon dosyası
+# Tüm path'ler ve parametreler burada tanımlı
 
 import os
 from pathlib import Path
 
-# Base directory
+# Ana dizin
 BASE_DIR = Path(__file__).parent.parent
 
-# Data paths
+# Veri dosyalarının yolu
 DATA_DIR = BASE_DIR / "dataset"
 DATA_FILE = DATA_DIR / "istanbulApartmentForRent_cleaned.csv"
 
-# Output paths
+# Çıktı klasörleri
 OUTPUT_DIR = BASE_DIR / "outputs"
 FIGURES_DIR = OUTPUT_DIR / "figures"
 METRICS_DIR = OUTPUT_DIR / "metrics"
@@ -18,11 +19,12 @@ TABLES_DIR = OUTPUT_DIR / "tables"
 MODELS_DIR = OUTPUT_DIR / "models"
 REPORTS_DIR = OUTPUT_DIR / "reports"
 
-# Create output directories if they don't exist
+# Çıktı klasörlerini oluştur (yoksa)
 for dir_path in [OUTPUT_DIR, FIGURES_DIR, METRICS_DIR, TABLES_DIR, MODELS_DIR, REPORTS_DIR]:
     dir_path.mkdir(parents=True, exist_ok=True)
 
-# Expected column names and mappings
+# Beklenen sütun isimleri ve eşleştirmeleri
+# Farklı veri setlerinde farklı isimler olabilir, hepsini buraya ekledim
 EXPECTED_COLUMNS = {
     'district': ['district', 'ilce', 'ilçe', 'district_name'],
     'neighborhood': ['neighborhood', 'mahalle', 'semt', 'neighborhood_name'],
@@ -34,47 +36,47 @@ EXPECTED_COLUMNS = {
     'price': ['price', 'rent', 'kira', 'rent_price', 'price_tl']
 }
 
-# Preprocessing parameters
+# Ön işleme parametreleri
 PREPROCESSING = {
-    'min_area': 10,
-    'min_price': 0,
-    'outlier_trim_percentile_low': 0.01,
-    'outlier_trim_percentile_high': 0.99,
-    'use_log_transform': True,
-    'neighborhood_freq_threshold': 5  # Minimum frequency for neighborhood encoding
+    'min_area': 10,  # minimum alan (m2)
+    'min_price': 0,  # minimum fiyat
+    'outlier_trim_percentile_low': 0.01,  # alt outlier eşiği
+    'outlier_trim_percentile_high': 0.99,  # üst outlier eşiği
+    'use_log_transform': True,  # log transformasyonu kullan
+    'neighborhood_freq_threshold': 5  # mahalle encoding için minimum frekans
 }
 
-# Model parameters
+# Model parametreleri
 MODEL = {
-    'test_size': 0.2,
-    'random_state': 42,
-    'cv_folds': 5,
-    'models_to_train': ['RandomForest', 'XGBoost']
+    'test_size': 0.2,  # test set oranı
+    'random_state': 42,  # rastgelelik için seed
+    'cv_folds': 5,  # cross validation fold sayısı
+    'models_to_train': ['RandomForest', 'XGBoost']  # eğitilecek modeller
 }
 
-# Feature engineering
+# Feature engineering ayarları
 FEATURES = {
-    'create_price_per_m2': True,  # For EDA only, not for model input
-    'aggregation_levels': ['district', 'neighborhood']
+    'create_price_per_m2': True,  # EDA için kullanılacak, modelde leakage riski var
+    'aggregation_levels': ['district', 'neighborhood']  # aggregation seviyeleri
 }
 
-# Clustering
+# Clustering ayarları
 CLUSTERING = {
-    'n_clusters_range': range(2, 11),
+    'n_clusters_range': range(2, 11),  # cluster sayısı aralığı
     'random_state': 42
 }
 
-# Anomaly detection
+# Anomaly detection ayarları
 ANOMALY = {
-    'residual_threshold_percentile': 95,
-    'z_score_threshold': 3,
-    'isolation_forest_contamination': 0.1
+    'residual_threshold_percentile': 95,  # residual için eşik
+    'z_score_threshold': 3,  # z-score eşiği
+    'isolation_forest_contamination': 0.1  # contamination oranı
 }
 
-# Visualization
+# Görselleştirme ayarları
 VISUALIZATION = {
-    'figsize': (12, 8),
-    'dpi': 300,
-    'style': 'seaborn-v0_8'
+    'figsize': (12, 8),  # figür boyutu
+    'dpi': 300,  # çözünürlük
+    'style': 'seaborn-v0_8'  # matplotlib stili
 }
 

@@ -1,4 +1,5 @@
-"""Data preprocessing utilities"""
+# Veri ön işleme fonksiyonları
+# Temizleme, dönüşüm ve hazırlık işlemleri
 
 import pandas as pd
 import numpy as np
@@ -8,7 +9,8 @@ import src.config as config
 
 
 def map_column_names(df: pd.DataFrame) -> pd.DataFrame:
-    """Map column names to standard names"""
+    # Sütun isimlerini standart isimlere çevir
+    # Farklı veri setlerinde farklı isimler olabilir
     df = df.copy()
     column_mapping = {}
     
@@ -23,7 +25,7 @@ def map_column_names(df: pd.DataFrame) -> pd.DataFrame:
         df = df.rename(columns=column_mapping)
         print(f"Column mapping applied: {column_mapping}")
     
-    # Check for missing columns
+    # Eksik sütunları kontrol et
     required_cols = list(config.EXPECTED_COLUMNS.keys())
     missing_cols = [col for col in required_cols if col not in df.columns]
     if missing_cols:
@@ -33,7 +35,7 @@ def map_column_names(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def analyze_missing_values(df: pd.DataFrame) -> pd.DataFrame:
-    """Analyze missing values and return summary"""
+    # Eksik değerleri analiz et ve özet döndür
     missing_summary = pd.DataFrame({
         'column': df.columns,
         'missing_count': df.isnull().sum(),
@@ -48,17 +50,17 @@ def clean_data(df: pd.DataFrame,
                 min_area: Optional[float] = None,
                 min_price: Optional[float] = None,
                 trim_outliers: bool = True) -> pd.DataFrame:
-    """Clean data: remove invalid values and trim outliers"""
+    # Veriyi temizle: geçersiz değerleri kaldır ve outlier'ları trim et
     df = df.copy()
     initial_len = len(df)
     
-    # Use config defaults if not provided
+    # Config'den default değerleri al
     if min_area is None:
         min_area = config.PREPROCESSING['min_area']
     if min_price is None:
         min_price = config.PREPROCESSING['min_price']
     
-    # Basic filtering
+    # Temel filtreleme
     if 'area' in df.columns:
         df = df[df['area'] > min_area]
         print(f"Filtered by area > {min_area}: {initial_len - len(df)} rows removed")
@@ -67,7 +69,7 @@ def clean_data(df: pd.DataFrame,
         df = df[df['price'] > min_price]
         print(f"Filtered by price > {min_price}: {initial_len - len(df)} rows removed")
     
-    # Trim outliers
+    # Outlier'ları trim et (çok uç değerleri kaldır)
     if trim_outliers:
         numeric_cols = df.select_dtypes(include=[np.number]).columns
         low_percentile = config.PREPROCESSING['outlier_trim_percentile_low']
@@ -88,7 +90,8 @@ def clean_data(df: pd.DataFrame,
 
 
 def prepare_target(df: pd.DataFrame, use_log: bool = None) -> Tuple[pd.DataFrame, bool]:
-    """Prepare target variable with optional log transformation"""
+    # Hedef değişkeni hazırla, log transformasyonu uygula
+    # Log transformasyonu fiyat dağılımını normalize ediyor
     df = df.copy()
     
     if use_log is None:
@@ -98,7 +101,7 @@ def prepare_target(df: pd.DataFrame, use_log: bool = None) -> Tuple[pd.DataFrame
         raise ValueError("'price' column not found")
     
     if use_log:
-        df['price_log'] = np.log1p(df['price'])
+        df['price_log'] = np.log1p(df['price'])  # log1p = log(1+x), 0 değerleri için güvenli
         print("Applied log1p transformation to price")
         return df, True
     else:
@@ -106,10 +109,10 @@ def prepare_target(df: pd.DataFrame, use_log: bool = None) -> Tuple[pd.DataFrame
 
 
 def prepare_categorical_features(df: pd.DataFrame) -> pd.DataFrame:
-    """Prepare categorical features for encoding"""
+    # Kategorik özellikleri encoding için hazırla
     df = df.copy()
     
-    # Ensure categorical columns are strings
+    # Kategorik sütunların string olduğundan emin ol
     for col in ['district', 'neighborhood']:
         if col in df.columns:
             df[col] = df[col].astype(str)
@@ -118,7 +121,7 @@ def prepare_categorical_features(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def get_feature_columns(df: pd.DataFrame, exclude_price: bool = True) -> list:
-    """Get list of feature columns for modeling"""
+    # Modelleme için feature sütunlarını döndür
     exclude_cols = ['price']
     if 'price_log' in df.columns:
         exclude_cols.append('price_log')
@@ -128,7 +131,7 @@ def get_feature_columns(df: pd.DataFrame, exclude_price: bool = True) -> list:
 
 
 def split_features_target(df: pd.DataFrame, target_col: str = 'price_log') -> Tuple[pd.DataFrame, pd.Series]:
-    """Split dataframe into features and target"""
+    # DataFrame'i feature'lar ve target olarak ayır
     if target_col not in df.columns:
         raise ValueError(f"Target column '{target_col}' not found")
     

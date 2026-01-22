@@ -1,4 +1,5 @@
-"""Anomaly detection for rental listings"""
+# Kira ilanları için anomaly detection
+# Anormal değerleri tespit ediyoruz
 
 import pandas as pd
 import numpy as np
@@ -12,7 +13,7 @@ from src.io import save_dataframe
 
 def detect_residual_anomalies(y_true: np.ndarray, y_pred: np.ndarray, 
                              threshold_percentile: float = 95) -> np.ndarray:
-    """Detect anomalies based on prediction residuals"""
+    # Tahmin residual'larına göre anomalileri tespit et
     residuals = np.abs(y_true - y_pred)
     threshold = np.percentile(residuals, threshold_percentile)
     anomalies = residuals > threshold
@@ -20,7 +21,7 @@ def detect_residual_anomalies(y_true: np.ndarray, y_pred: np.ndarray,
 
 
 def detect_zscore_anomalies(df: pd.DataFrame, z_threshold: float = 3.0) -> np.ndarray:
-    """Detect anomalies using z-score within neighborhoods"""
+    # Z-score kullanarak anomalileri tespit et (mahalle içinde)
     if 'neighborhood' not in df.columns or 'price' not in df.columns:
         return np.zeros(len(df), dtype=bool)
     
@@ -44,7 +45,7 @@ def detect_zscore_anomalies(df: pd.DataFrame, z_threshold: float = 3.0) -> np.nd
 def detect_isolation_forest_anomalies(df: pd.DataFrame, 
                                      contamination: float = 0.1,
                                      features: list = None) -> np.ndarray:
-    """Detect anomalies using Isolation Forest"""
+    # Isolation Forest kullanarak anomalileri tespit et
     if features is None:
         # Select numeric features
         numeric_cols = df.select_dtypes(include=[np.number]).columns.tolist()
@@ -80,7 +81,7 @@ def detect_isolation_forest_anomalies(df: pd.DataFrame,
 
 
 def plot_anomaly_detection(df: pd.DataFrame, anomaly_flags: dict, save_path):
-    """Plot anomaly detection results"""
+    # Anomaly detection sonuçlarını görselleştir
     fig, axes = plt.subplots(2, 2, figsize=(16, 12))
     
     # Area vs Price scatter with anomalies
@@ -123,7 +124,7 @@ def plot_anomaly_detection(df: pd.DataFrame, anomaly_flags: dict, save_path):
 
 def generate_anomaly_report(df: pd.DataFrame, y_true: np.ndarray = None, 
                             y_pred: np.ndarray = None, test_indices: np.ndarray = None):
-    """Generate anomaly detection report"""
+    # Anomaly detection raporunu oluştur
     print("\n=== Generating Anomaly Detection ===")
     
     n_samples = len(df)

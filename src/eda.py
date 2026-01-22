@@ -1,4 +1,5 @@
-"""Exploratory Data Analysis"""
+# Keşifsel Veri Analizi (EDA) fonksiyonları
+# Veri görselleştirme ve analiz grafikleri
 
 import pandas as pd
 import numpy as np
@@ -9,13 +10,13 @@ import src.config as config
 
 
 def setup_style():
-    """Setup matplotlib style"""
+    # Matplotlib stilini ayarla
     plt.style.use(config.VISUALIZATION['style'])
     sns.set_palette("husl")
 
 
 def plot_missing_values(missing_df: pd.DataFrame, save_path: Path):
-    """Plot missing values analysis"""
+    # Eksik değerleri görselleştir
     if len(missing_df) == 0:
         print("No missing values found")
         return
@@ -31,7 +32,7 @@ def plot_missing_values(missing_df: pd.DataFrame, save_path: Path):
 
 
 def plot_target_distribution(df: pd.DataFrame, save_path: Path):
-    """Plot target variable distribution"""
+    # Hedef değişkenin dağılımını çiz (fiyat)
     fig, axes = plt.subplots(2, 2, figsize=(16, 12))
     
     # Original price
@@ -63,7 +64,7 @@ def plot_target_distribution(df: pd.DataFrame, save_path: Path):
 
 
 def plot_feature_distributions(df: pd.DataFrame, save_path: Path):
-    """Plot distributions of numeric features"""
+    # Sayısal özelliklerin dağılımlarını çiz
     numeric_cols = df.select_dtypes(include=[np.number]).columns.tolist()
     exclude = ['price', 'price_log', 'price_per_m2']
     numeric_cols = [col for col in numeric_cols if col not in exclude]
@@ -92,7 +93,7 @@ def plot_feature_distributions(df: pd.DataFrame, save_path: Path):
 
 
 def plot_correlation_matrix(df: pd.DataFrame, save_path: Path):
-    """Plot correlation matrix"""
+    # Korelasyon matrisini çiz
     numeric_cols = df.select_dtypes(include=[np.number]).columns.tolist()
     exclude = ['price_log']  # Keep price for correlation
     numeric_cols = [col for col in numeric_cols if col not in exclude]
@@ -114,7 +115,7 @@ def plot_correlation_matrix(df: pd.DataFrame, save_path: Path):
 
 
 def plot_district_price_analysis(df: pd.DataFrame, save_path: Path, top_n: int = 20):
-    """Plot district-level price analysis"""
+    # İlçe bazında fiyat analizi
     if 'district' not in df.columns or 'price' not in df.columns:
         return
     
@@ -145,7 +146,7 @@ def plot_district_price_analysis(df: pd.DataFrame, save_path: Path, top_n: int =
 
 
 def plot_spatial_heatmap(df: pd.DataFrame, save_path: Path):
-    """Create pseudo-spatial heatmap (district x neighborhood pivot)"""
+    # İlçe x mahalle pivot tablosu ile heatmap oluştur
     if 'district' not in df.columns or 'neighborhood' not in df.columns or 'price' not in df.columns:
         return
     
@@ -170,7 +171,7 @@ def plot_spatial_heatmap(df: pd.DataFrame, save_path: Path):
 
 
 def generate_eda_report(df: pd.DataFrame):
-    """Generate all EDA visualizations"""
+    # Tüm EDA görselleştirmelerini oluştur
     setup_style()
     
     print("\n=== Generating EDA Visualizations ===")

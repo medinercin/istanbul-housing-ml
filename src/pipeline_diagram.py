@@ -1,4 +1,5 @@
-"""Generate pipeline diagrams"""
+# Pipeline diyagramları oluşturma
+# Metodoloji ve pipeline görselleştirmeleri
 
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
@@ -7,7 +8,7 @@ import src.config as config
 
 
 def create_methodology_diagram(save_path):
-    """Create the general methodology diagram"""
+    # Genel metodoloji diyagramını oluştur
     fig, ax = plt.subplots(figsize=(16, 10))
     ax.set_xlim(0, 10)
     ax.set_ylim(0, 12)

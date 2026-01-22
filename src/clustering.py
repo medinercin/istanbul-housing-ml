@@ -1,4 +1,5 @@
-"""Clustering analysis for neighborhoods"""
+# Mahalleler için clustering analizi
+# KMeans ile mahalleleri gruplara ayırıyoruz
 
 import pandas as pd
 import numpy as np
@@ -13,7 +14,7 @@ from src.io import save_dataframe
 
 
 def prepare_clustering_features(df: pd.DataFrame) -> tuple:
-    """Prepare features for clustering"""
+    # Clustering için özellikleri hazırla
     # Aggregate neighborhood-level features
     neighborhood_features = df.groupby('neighborhood').agg({
         'price': ['mean', 'median', 'std'],
@@ -42,7 +43,7 @@ def prepare_clustering_features(df: pd.DataFrame) -> tuple:
 
 
 def find_optimal_clusters(X: pd.DataFrame, max_k: int = 10) -> dict:
-    """Find optimal number of clusters using elbow and silhouette methods"""
+    # Elbow ve silhouette yöntemleri ile optimal cluster sayısını bul
     scaler = StandardScaler()
     X_scaled = scaler.fit_transform(X)
     
@@ -64,7 +65,7 @@ def find_optimal_clusters(X: pd.DataFrame, max_k: int = 10) -> dict:
 
 
 def plot_cluster_selection(metrics: dict, save_path):
-    """Plot elbow and silhouette plots for cluster selection"""
+    # Cluster seçimi için elbow ve silhouette grafiklerini çiz
     fig, axes = plt.subplots(1, 2, figsize=(14, 5))
     
     # Elbow plot
@@ -88,7 +89,7 @@ def plot_cluster_selection(metrics: dict, save_path):
 
 
 def perform_clustering(X: pd.DataFrame, n_clusters: int = 5) -> tuple:
-    """Perform KMeans clustering"""
+    # KMeans clustering uygula
     scaler = StandardScaler()
     X_scaled = scaler.fit_transform(X)
     
@@ -99,7 +100,7 @@ def perform_clustering(X: pd.DataFrame, n_clusters: int = 5) -> tuple:
 
 
 def plot_cluster_pca(X: pd.DataFrame, labels: np.ndarray, neighborhoods: pd.Series, save_path):
-    """Plot clusters in 2D PCA space"""
+    # Cluster'ları 2D PCA uzayında görselleştir
     scaler = StandardScaler()
     X_scaled = scaler.fit_transform(X)
     
@@ -128,7 +129,7 @@ def plot_cluster_pca(X: pd.DataFrame, labels: np.ndarray, neighborhoods: pd.Seri
 
 def generate_cluster_summary(neighborhood_features: pd.DataFrame, labels: np.ndarray, 
                              feature_cols: list) -> pd.DataFrame:
-    """Generate cluster summary statistics"""
+    # Cluster özet istatistiklerini oluştur
     neighborhood_features = neighborhood_features.copy()
     neighborhood_features['cluster'] = labels
     
@@ -140,7 +141,7 @@ def generate_cluster_summary(neighborhood_features: pd.DataFrame, labels: np.nda
 
 
 def generate_clustering_report(df: pd.DataFrame):
-    """Generate clustering analysis report"""
+    # Clustering analiz raporunu oluştur
     print("\n=== Generating Clustering Analysis ===")
     
     neighborhood_features, X, feature_cols = prepare_clustering_features(df)

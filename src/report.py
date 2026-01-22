@@ -1,4 +1,5 @@
-"""Generate analysis report"""
+# Analiz raporu oluşturma
+# Markdown formatında rapor üretiyoruz
 
 import pandas as pd
 from pathlib import Path
@@ -11,7 +12,7 @@ def generate_analysis_md(metrics_dict: dict, volatility_df: pd.DataFrame = None,
                         cluster_summary: pd.DataFrame = None,
                         anomaly_count: int = 0,
                         use_log: bool = False) -> str:
-    """Generate analysis.md markdown report"""
+    # analysis.md markdown raporunu oluştur
     
     report = []
     report.append("# Istanbul Kiralık Konut Fiyat Tahmini - Analiz Raporu\n")

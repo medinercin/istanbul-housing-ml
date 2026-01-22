@@ -1,4 +1,5 @@
-"""Model interpretability analysis"""
+# Model interpretability analizi
+# Feature importance ve model yorumlanabilirliği
 
 import pandas as pd
 import numpy as np
@@ -10,7 +11,7 @@ from src.io import save_json, save_dataframe
 
 def calculate_permutation_importance(model, X_test: pd.DataFrame, y_test: pd.Series,
                                     n_repeats: int = 10, random_state: int = None) -> dict:
-    """Calculate permutation importance"""
+    # Permutation importance hesapla
     if random_state is None:
         random_state = config.MODEL['random_state']
     
@@ -27,7 +28,7 @@ def calculate_permutation_importance(model, X_test: pd.DataFrame, y_test: pd.Ser
 
 
 def get_feature_names(preprocessor, original_features: list) -> list:
-    """Get feature names after preprocessing"""
+    # Preprocessing sonrası feature isimlerini al
     try:
         # Get numeric feature names
         numeric_transformer = preprocessor.named_transformers_['num']
